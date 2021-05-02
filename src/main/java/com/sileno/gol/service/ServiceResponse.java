@@ -21,7 +21,7 @@ public class ServiceResponse<T> {
         if(errorCode == ResponseCodes.OK && responsePayload != null) {
             action.accept(responsePayload);
         } else {
-            log.error("An error occurred: {}", toString());
+            log.error("An error occurred: {}", this.toString());
         }
     }
 }
