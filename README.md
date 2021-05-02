@@ -6,6 +6,7 @@ There are multiple ways to build and run this app. The easiest one is to use Mav
 ```
 mvn spring-boot:run
 ```
+Then, go to your `localhost:8080` and play the hell out of it.
 If you don't have Maven installed on your system, you can use the embedded one inside the root directory.
 
 ## Technologies used
