@@ -95,10 +95,11 @@ public class HomeController {
     public ResponseEntity<String> forwardGeneration(HttpServletResponse response, HttpSession session) {
         log.debug("Forward request");
 
-        byte[] serializedBooleanMap = (byte[]) session.getAttribute(ATTRIBUTE_SESSION_BYTE_DATA);
-        boolean[][] booleanMatrix = GolUtils.deserialize(serializedBooleanMap);
-        booleanMatrix = Evolver.nextTick(booleanMatrix);
-        session.setAttribute(ATTRIBUTE_SESSION_BYTE_DATA, GolUtils.serialize(booleanMatrix));
+        gameService.forwardGeneration(session.getId(), (byte[]) session.getAttribute(ATTRIBUTE_SESSION_BYTE_DATA)).ifNoErrors(forwardedData -> {
+                    session.setAttribute(ATTRIBUTE_SESSION_BYTE_DATA, forwardedData);
+                }
+        );
+        boolean[][] booleanMatrix = GolUtils.deserialize((byte[]) session.getAttribute(ATTRIBUTE_SESSION_BYTE_DATA));
         String base64Image = ImageRenderer.renderToBase64(booleanMatrix);
 
         HttpHeaders headers = new HttpHeaders();

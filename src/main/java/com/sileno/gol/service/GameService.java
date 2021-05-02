@@ -1,5 +1,6 @@
 package com.sileno.gol.service;
 
+import com.sileno.gol.population.Evolver;
 import com.sileno.gol.population.Populator;
 import com.sileno.gol.population.StrategyType;
 import com.sileno.gol.model.GameState;
@@ -53,8 +54,16 @@ public class GameService {
         return new ServiceResponse<>(serializedBytes);
     }
 
+    public ServiceResponse<byte[]> forwardGeneration(String id, byte[] serializedMap) {
+        boolean[][] booleanMatrix = GolUtils.deserialize(serializedMap);
+        booleanMatrix = Evolver.nextTick(booleanMatrix);
+        return new ServiceResponse<>(GolUtils.serialize(booleanMatrix));
+    }
+
     public ServiceResponse<Boolean> isSessionPresent(String sessionId) {
         boolean isPresent = !(gameStateRepository.findBySessionId(sessionId).isEmpty());
         return new ServiceResponse<>(isPresent);
     }
+
+
 }
