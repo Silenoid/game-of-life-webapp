@@ -12,7 +12,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableJpaRepositories(basePackages = "com.sileno.gol")
 public class AppConfiguration implements WebMvcConfigurer {
 
-    public static int MATRIX_SQUARE_SIZE = 32;
+    //TODO: Externalize property
+    public static final int MATRIX_SQUARE_SIZE = 128;
 
     @Bean
     public ViewResolver getViewResolver() {
