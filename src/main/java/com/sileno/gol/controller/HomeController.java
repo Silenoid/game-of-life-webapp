@@ -65,9 +65,7 @@ public class HomeController {
                 }
         );
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<>(generateImageFromSessionData(session), headers, HttpStatus.OK);
+        return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(generateImageFromSessionData(session));
     }
 
     @GetMapping(value = "/generate/{strategy_type:[0-2]}")
@@ -79,9 +77,7 @@ public class HomeController {
                 }
         );
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<>(generateImageFromSessionData(session), headers, HttpStatus.OK);
+        return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(generateImageFromSessionData(session));
     }
 
     @GetMapping(value = "/forward")
@@ -93,9 +89,7 @@ public class HomeController {
                 }
         );
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<>(generateImageFromSessionData(session), headers, HttpStatus.OK);
+        return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(generateImageFromSessionData(session));
     }
 
     private String generateImageFromSessionData(HttpSession session) {
