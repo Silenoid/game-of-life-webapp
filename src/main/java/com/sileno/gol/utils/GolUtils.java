@@ -1,9 +1,12 @@
 package com.sileno.gol.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.SerializationUtils;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GolUtils {
 
     public static byte[] serialize(boolean[][] booleanMatrix) {
@@ -29,7 +32,7 @@ public class GolUtils {
         StringBuilder strBuilder = new StringBuilder("Byte array:\n");
         for (byte b : bytes) {
             strBuilder.append(String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0'))
-                    .append(" | ").append(Integer.toHexString(b))
+                    .append(" | ").append(String.format("%02X", b))
                     .append(" | ").append(b).append("\n");
         }
         log.trace(strBuilder.toString());

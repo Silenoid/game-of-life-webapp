@@ -47,14 +47,14 @@ public class GameService {
         return new ServiceResponse<>(gameState.getBytesData());
     }
 
-    public ServiceResponse<byte[]> generatePopulation(String sessionId, int strategyType) {
+    public ServiceResponse<byte[]> generatePopulation(int strategyType) {
         Populator populator = Populator.producePopulator(StrategyType.values()[strategyType]);
         boolean[][] booleanPopulationMap = populator.populate();
         byte[] serializedBytes = GolUtils.serialize(booleanPopulationMap);
         return new ServiceResponse<>(serializedBytes);
     }
 
-    public ServiceResponse<byte[]> forwardGeneration(String id, byte[] serializedMap) {
+    public ServiceResponse<byte[]> forwardGeneration(byte[] serializedMap) {
         boolean[][] booleanMatrix = GolUtils.deserialize(serializedMap);
         booleanMatrix = Evolver.nextTick(booleanMatrix);
         return new ServiceResponse<>(GolUtils.serialize(booleanMatrix));

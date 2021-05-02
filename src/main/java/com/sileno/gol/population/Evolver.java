@@ -1,7 +1,10 @@
 package com.sileno.gol.population;
 
 import com.sileno.gol.config.AppConfiguration;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Evolver {
 
     private static int mapSize = AppConfiguration.MATRIX_SQUARE_SIZE;

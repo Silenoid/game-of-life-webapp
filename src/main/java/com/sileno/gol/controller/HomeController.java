@@ -48,7 +48,7 @@ public class HomeController {
     public void saveState(HttpServletResponse response, HttpSession session) {
         log.debug("Saving request for session {}", session.getId());
         gameService.saveState(session.getId(), (byte[]) session.getAttribute(SESSION_BYTE_DATA)).ifNoErrors(everythingIsOk -> {
-            if (everythingIsOk)
+            if (Boolean.TRUE.equals(everythingIsOk))
                 log.info("Game state saved succesfully");
             else
                 log.warn("Game state not saved because of errors");
@@ -60,10 +60,8 @@ public class HomeController {
         log.debug("Loading request for session {}", session.getId());
 
         ServiceResponse<byte[]> serviceResponse = gameService.loadState(session.getId());
-        serviceResponse.ifNoErrors(populationData -> {
-                    session.setAttribute(SESSION_BYTE_DATA, populationData);
-                }
-        );
+        serviceResponse.ifNoErrors(populationData ->
+                session.setAttribute(SESSION_BYTE_DATA, populationData));
 
         return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(generateImageFromSessionData(session));
     }
@@ -72,10 +70,8 @@ public class HomeController {
     public ResponseEntity<String> generatePopulation(HttpServletResponse response, HttpSession session, @PathVariable("strategy_type") int strategyType) {
         log.debug("Generate population with strategy {} for session {}", strategyType, session.getId());
 
-        gameService.generatePopulation(session.getId(), strategyType).ifNoErrors(populationData -> {
-                    session.setAttribute(SESSION_BYTE_DATA, populationData);
-                }
-        );
+        gameService.generatePopulation(strategyType).ifNoErrors(
+                populationData -> session.setAttribute(SESSION_BYTE_DATA, populationData));
 
         return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(generateImageFromSessionData(session));
     }
@@ -84,10 +80,8 @@ public class HomeController {
     public ResponseEntity<String> forwardGeneration(HttpServletResponse response, HttpSession session) {
         log.debug("Forward request");
 
-        gameService.forwardGeneration(session.getId(), (byte[]) session.getAttribute(SESSION_BYTE_DATA)).ifNoErrors(forwardedData -> {
-                    session.setAttribute(SESSION_BYTE_DATA, forwardedData);
-                }
-        );
+        gameService.forwardGeneration((byte[]) session.getAttribute(SESSION_BYTE_DATA)).ifNoErrors(
+                forwardedData -> session.setAttribute(SESSION_BYTE_DATA, forwardedData));
 
         return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(generateImageFromSessionData(session));
     }

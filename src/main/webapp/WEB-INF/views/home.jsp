@@ -63,7 +63,7 @@
     <div class="row">
         <div class="col-sm"></div>
         <div id="image-container" class="col-sm text-centered" onclick="forwardGeneration()">
-            <img id="image-gol" class="shadow-lg" data-tilt>
+            <img id="image-gol" data-tilt>
         </div>
         <div class="col-sm"></div>
     </div>

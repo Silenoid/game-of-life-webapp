@@ -1,6 +1,8 @@
 package com.sileno.gol.utils;
 
 import com.sileno.gol.config.AppConfiguration;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -14,13 +16,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ImageRenderer {
 
     public static String renderToBase64(boolean[][] booleanMatrix) {
         return imgToBase64String(render(booleanMatrix), "png");
     }
 
-    public static BufferedImage render(boolean[][] booleanMatrix) {
+    private static BufferedImage render(boolean[][] booleanMatrix) {
         BufferedImage bufferedImage = new BufferedImage(AppConfiguration.MATRIX_SQUARE_SIZE, AppConfiguration.MATRIX_SQUARE_SIZE, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = bufferedImage.createGraphics();
 
