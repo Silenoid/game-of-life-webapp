@@ -1,6 +1,9 @@
 package com.sileno.gol.model;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,4 +31,13 @@ public class GameState {
     @Column(name="CREATION_TIME", nullable=false)
     @NonNull private LocalDateTime creationTime = LocalDateTime.now();
 
+    @Override
+    public String toString() {
+        return "GameState{" +
+                "id=" + id +
+                ", sessionId='" + sessionId + '\'' +
+                ", bytesData lenght=" + bytesData.length +
+                ", creationTime=" + creationTime +
+                '}';
+    }
 }

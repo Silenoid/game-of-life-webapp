@@ -1,10 +1,10 @@
 package com.sileno.gol.service;
 
+import com.sileno.gol.model.GameState;
+import com.sileno.gol.model.GameStateRepository;
 import com.sileno.gol.population.Evolver;
 import com.sileno.gol.population.Populator;
 import com.sileno.gol.population.StrategyType;
-import com.sileno.gol.model.GameState;
-import com.sileno.gol.model.GameStateRepository;
 import com.sileno.gol.utils.GolUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
