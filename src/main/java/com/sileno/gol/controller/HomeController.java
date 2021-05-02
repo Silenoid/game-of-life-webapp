@@ -1,6 +1,5 @@
 package com.sileno.gol.controller;
 
-import com.sileno.gol.population.Evolver;
 import com.sileno.gol.service.GameService;
 import com.sileno.gol.service.ServiceResponse;
 import com.sileno.gol.utils.GolUtils;
@@ -25,7 +24,7 @@ public class HomeController {
 
     private final GameService gameService;
 
-    private static final String ATTRIBUTE_SESSION_BYTE_DATA = "byte_data";
+    private static final String SESSION_BYTE_DATA = "byte_data";
     private static final String VIEW_HOME = "home";
 
     @Autowired
@@ -50,7 +49,7 @@ public class HomeController {
     @GetMapping(value = "/save")
     public void saveState(HttpServletResponse response, HttpSession session) {
         log.debug("Saving request for session {}", session.getId());
-        gameService.saveState(session.getId(), (byte[]) session.getAttribute(ATTRIBUTE_SESSION_BYTE_DATA)).ifNoErrors(everythingIsOk -> {
+        gameService.saveState(session.getId(), (byte[]) session.getAttribute(SESSION_BYTE_DATA)).ifNoErrors(everythingIsOk -> {
             if (everythingIsOk)
                 log.info("Game state saved succesfully");
             else
@@ -64,15 +63,13 @@ public class HomeController {
 
         ServiceResponse<byte[]> serviceResponse = gameService.loadState(session.getId());
         serviceResponse.ifNoErrors(populationData -> {
-                    session.setAttribute(ATTRIBUTE_SESSION_BYTE_DATA, populationData);
+                    session.setAttribute(SESSION_BYTE_DATA, populationData);
                 }
         );
-        byte[] serializedBooleanMap = (byte[]) session.getAttribute(ATTRIBUTE_SESSION_BYTE_DATA);
-        String base64Image = ImageRenderer.renderToBase64(GolUtils.deserialize(serializedBooleanMap));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<>(base64Image, headers, HttpStatus.OK);
+        return new ResponseEntity<>(generateImageFromSessionData(session), headers, HttpStatus.OK);
     }
 
     @GetMapping(value = "/generate/{strategy_type:[0-2]}")
@@ -80,31 +77,35 @@ public class HomeController {
         log.debug("Generate population with strategy {} for session {}", strategyType, session.getId());
 
         gameService.generatePopulation(session.getId(), strategyType).ifNoErrors(populationData -> {
-                    session.setAttribute(ATTRIBUTE_SESSION_BYTE_DATA, populationData);
+                    session.setAttribute(SESSION_BYTE_DATA, populationData);
                 }
         );
-        byte[] serializedBooleanMap = (byte[]) session.getAttribute(ATTRIBUTE_SESSION_BYTE_DATA);
-        String base64Image = ImageRenderer.renderToBase64(GolUtils.deserialize(serializedBooleanMap));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<>(base64Image, headers, HttpStatus.OK);
+        return new ResponseEntity<>(generateImageFromSessionData(session), headers, HttpStatus.OK);
     }
 
     @GetMapping(value = "/forward")
     public ResponseEntity<String> forwardGeneration(HttpServletResponse response, HttpSession session) {
         log.debug("Forward request");
 
-        gameService.forwardGeneration(session.getId(), (byte[]) session.getAttribute(ATTRIBUTE_SESSION_BYTE_DATA)).ifNoErrors(forwardedData -> {
-                    session.setAttribute(ATTRIBUTE_SESSION_BYTE_DATA, forwardedData);
+        gameService.forwardGeneration(session.getId(), (byte[]) session.getAttribute(SESSION_BYTE_DATA)).ifNoErrors(forwardedData -> {
+                    session.setAttribute(SESSION_BYTE_DATA, forwardedData);
                 }
         );
-        boolean[][] booleanMatrix = GolUtils.deserialize((byte[]) session.getAttribute(ATTRIBUTE_SESSION_BYTE_DATA));
-        String base64Image = ImageRenderer.renderToBase64(booleanMatrix);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.TEXT_PLAIN);
-        return new ResponseEntity<>(base64Image, headers, HttpStatus.OK);
+        return new ResponseEntity<>(generateImageFromSessionData(session), headers, HttpStatus.OK);
+    }
+
+    private String generateImageFromSessionData(HttpSession session) {
+        boolean[][] booleanMatrix = GolUtils.deserialize((byte[]) session.getAttribute(SESSION_BYTE_DATA));
+        String base64Image = ImageRenderer.renderToBase64(booleanMatrix);
+        if(base64Image.isEmpty())
+            log.warn("Generate empty image for sessio {}", session.getId());
+        return base64Image;
     }
 
 }
