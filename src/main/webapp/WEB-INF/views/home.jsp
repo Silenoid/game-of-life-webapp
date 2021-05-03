@@ -63,7 +63,7 @@
     <div class="row">
         <div class="col-sm"></div>
         <div id="image-container" class="col-sm text-centered" onclick="forwardGeneration()">
-            <img id="image-gol" data-tilt>
+            <img id="image-gol" data-tilt data-tilt-full-page-listening>
         </div>
         <div class="col-sm"></div>
     </div>
@@ -78,7 +78,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Informazioni varie ed eventuali
+                    <ul>
+                        <li>You can evolve your population to the next generation clicking on the image</li>
+                        <li>You can save and load the state of your game</li>
+                        <li>You can randomly generate a population with different strategies</li>
+                    </ul>
                 </div>
             </div>
         </div>
