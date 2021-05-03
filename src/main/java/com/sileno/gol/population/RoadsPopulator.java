@@ -6,7 +6,7 @@ import com.sileno.gol.utils.GolUtils;
 public class RoadsPopulator extends Populator {
     @Override
     public boolean[][] populate() {
-        int roadsNum = 3 + randomizer.nextInt(50);
+        int roadsNum = (int) (AppConfiguration.MATRIX_SQUARE_SIZE * 0.5) + randomizer.nextInt(AppConfiguration.MATRIX_SQUARE_SIZE);
         for (int i = 0; i < roadsNum; i++) {
             int roadSize = 5 + randomizer.nextInt(20);
             int xRoad = randomizer.nextInt(AppConfiguration.MATRIX_SQUARE_SIZE);

@@ -6,7 +6,7 @@ public class VillagesPopulator extends Populator {
 
     @Override
     public boolean[][] populate() {
-        int villagesNum = 3 + randomizer.nextInt(10);
+        int villagesNum = (int) (AppConfiguration.MATRIX_SQUARE_SIZE * 0.05 + randomizer.nextInt((int) (AppConfiguration.MATRIX_SQUARE_SIZE * 0.1)));
         for (int i = 0; i < villagesNum; i++) {
             int villageSize = 1 + randomizer.nextInt(5);
             int xCenter = randomizer.nextInt(AppConfiguration.MATRIX_SQUARE_SIZE);
