@@ -29,6 +29,7 @@ If you don't have Maven installed on your system, you can use the embedded one i
 - Everything about data manipulation has been done server-sided. This can be seen as a trade-off between security and robustness in exchange for a heavy and avoidable communication between the two parts.
 My main reason, anyway, was to play more with the backend side. If there were no concern about storing and elaborating data, I'd have considered doing everything client-side, maybe even using WebGL.
 - I've deliberately avoided as much as possible Exception management. I've done this just to have fun and experiment with a different way of doing things.
+- I've deliberately avoided any form of documentation, except for todos and personal quick memos, keeping the code as much self-explanatory as possible. On a big project that's not a library that somebody should use, this means cutting on documentation maintainance.
 - I've tried the functional approach, with a template method through generics, so that the communication between the Controller layer and the Service one would have been painless and hopefully cleaner, at least for me:
 ```Java
 gameService.generatePopulation(strategyType).ifNoErrors(
